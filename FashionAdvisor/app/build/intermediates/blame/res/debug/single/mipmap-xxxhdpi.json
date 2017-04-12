@@ -1,0 +1,10 @@
+[
+    {
+        "merged": "/Users/Matt/Google Drive/School/2017 _Spring/Software Engineering/FashionAdvisor/app/build/intermediates/res/merged/debug/mipmap-xxxhdpi/ic_launcher.png",
+        "source": "/Users/Matt/Google Drive/School/2017 _Spring/Software Engineering/FashionAdvisor/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png"
+    },
+    {
+        "merged": "/Users/Matt/Google Drive/School/2017 _Spring/Software Engineering/cosc625_fashionadvisor/FashionAdvisor/app/build/intermediates/res/merged/debug/mipmap-xxxhdpi/ic_launcher.png",
+        "source": "/Users/Matt/Google Drive/School/2017 _Spring/Software Engineering/cosc625_fashionadvisor/FashionAdvisor/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png"
+    }
+]
