@@ -16,12 +16,12 @@
         "source": "/Users/Matt/Google Drive/School/2017 _Spring/Software Engineering/cosc625_fashionadvisor/FashionAdvisor/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/25.1.1/res/color/abc_secondary_text_material_light.xml"
     },
     {
-        "merged": "/Users/Matt/Google Drive/School/2017 _Spring/Software Engineering/FashionAdvisor/app/build/intermediates/res/merged/debug/color/abc_primary_text_material_light.xml",
-        "source": "/Users/Matt/Google Drive/School/2017 _Spring/Software Engineering/FashionAdvisor/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/25.1.1/res/color/abc_primary_text_material_light.xml"
-    },
-    {
         "merged": "/Users/Matt/Google Drive/School/2017 _Spring/Software Engineering/cosc625_fashionadvisor/FashionAdvisor/app/build/intermediates/res/merged/debug/color/abc_primary_text_material_light.xml",
         "source": "/Users/Matt/Google Drive/School/2017 _Spring/Software Engineering/cosc625_fashionadvisor/FashionAdvisor/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/25.1.1/res/color/abc_primary_text_material_light.xml"
+    },
+    {
+        "merged": "/Users/Matt/Google Drive/School/2017 _Spring/Software Engineering/FashionAdvisor/app/build/intermediates/res/merged/debug/color/abc_primary_text_material_light.xml",
+        "source": "/Users/Matt/Google Drive/School/2017 _Spring/Software Engineering/FashionAdvisor/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/25.1.1/res/color/abc_primary_text_material_light.xml"
     },
     {
         "merged": "/Users/Matt/Google Drive/School/2017 _Spring/Software Engineering/FashionAdvisor/app/build/intermediates/res/merged/debug/color/abc_search_url_text.xml",
