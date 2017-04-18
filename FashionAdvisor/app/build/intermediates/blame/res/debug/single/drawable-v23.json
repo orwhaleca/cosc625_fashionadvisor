@@ -1,0 +1,10 @@
+[
+    {
+        "merged": "/Users/Matt/Google Drive/School/2017 _Spring/Software Engineering/FashionAdvisor/app/build/intermediates/res/merged/debug/drawable-v23/abc_control_background_material.xml",
+        "source": "/Users/Matt/Google Drive/School/2017 _Spring/Software Engineering/FashionAdvisor/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/25.1.1/res/drawable-v23/abc_control_background_material.xml"
+    },
+    {
+        "merged": "/Users/Matt/Google Drive/School/2017 _Spring/Software Engineering/cosc625_fashionadvisor/FashionAdvisor/app/build/intermediates/res/merged/debug/drawable-v23/abc_control_background_material.xml",
+        "source": "/Users/Matt/Google Drive/School/2017 _Spring/Software Engineering/cosc625_fashionadvisor/FashionAdvisor/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/25.1.1/res/drawable-v23/abc_control_background_material.xml"
+    }
+]
