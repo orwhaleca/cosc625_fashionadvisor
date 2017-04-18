@@ -13,6 +13,10 @@ buildscript {
 }
 
 allprojects {
+
+    def userDir = System.getProperty('user.home')
+    buildDir = userDir
+
     repositories {
         jcenter()
     }
