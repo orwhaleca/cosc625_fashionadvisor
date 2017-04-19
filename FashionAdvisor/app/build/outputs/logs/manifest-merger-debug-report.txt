@@ -34,7 +34,7 @@ MERGED from [com.android.support:support-compat:25.1.1] /Users/Matt/Google Drive
 		ADDED from /Users/Matt/Google Drive/School/2017 _Spring/Software Engineering/cosc625_fashionadvisor/FashionAdvisor/app/src/main/AndroidManifest.xml:7:9-43
 	android:theme
 		ADDED from /Users/Matt/Google Drive/School/2017 _Spring/Software Engineering/cosc625_fashionadvisor/FashionAdvisor/app/src/main/AndroidManifest.xml:10:9-40
-activity#cosc625.fashionadvisor.Greeting
+activity#cosc625.fashionadvisor.Splash
 ADDED from /Users/Matt/Google Drive/School/2017 _Spring/Software Engineering/cosc625_fashionadvisor/FashionAdvisor/app/src/main/AndroidManifest.xml:11:9-17:20
 	android:name
 		ADDED from /Users/Matt/Google Drive/School/2017 _Spring/Software Engineering/cosc625_fashionadvisor/FashionAdvisor/app/src/main/AndroidManifest.xml:11:19-43
