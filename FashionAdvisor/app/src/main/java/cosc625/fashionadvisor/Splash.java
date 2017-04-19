@@ -1,5 +1,6 @@
 package cosc625.fashionadvisor;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
@@ -46,5 +47,7 @@ public class Splash extends AppCompatActivity {
         //read JSON files for clothes entries
         //any additional setup step
         //switch to tabbed view
+        Intent intent = new Intent(this, MainTabbed.class);
+        startActivity(intent);
     }
 }
