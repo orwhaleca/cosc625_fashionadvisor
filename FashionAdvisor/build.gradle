@@ -14,7 +14,7 @@ buildscript {
 
 allprojects {
 
-    def userDir = System.getProperty('user.home')
+    def userDir = System.getProperty('user.home') + "/cosc625/"
     buildDir = userDir
 
     repositories {
