@@ -21,7 +21,7 @@
             android:name=".MainTabbed"
             android:label="@string/title_activity_main_tabbed"
             android:theme="@style/FashionTheme"></activity>
-        
+
     </application>
 
 </manifest>

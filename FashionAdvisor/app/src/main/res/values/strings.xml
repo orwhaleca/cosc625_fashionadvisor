@@ -5,4 +5,8 @@
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
     <string name="title_activity_main_tabbed">MainTabbed</string>
+    <string name="today">This is the today tab</string>
+    <string name="plan">This is the plan tab</string>
+    <string name="wardrobe">This is the wardrobe tab</string>
+    <string name="settings">This is the settings tab</string>
 </resources>
