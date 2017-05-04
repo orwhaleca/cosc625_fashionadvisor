@@ -12,6 +12,7 @@ import cosc625.fashionadvisor.R;
  * Created by Matt on 5/4/17.
  */
 
+//TODO: implement the wardrobe planning system
 public class Plan extends Fragment {
 
     public Plan() {

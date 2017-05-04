@@ -12,6 +12,7 @@ import cosc625.fashionadvisor.R;
  * Created by Matt on 5/4/17.
  */
 
+//TODO: create our outfit matching algorithm here
 public class Today extends Fragment {
 
     public Today() {

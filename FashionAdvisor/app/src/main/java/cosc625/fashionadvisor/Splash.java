@@ -39,6 +39,7 @@ public class Splash extends AppCompatActivity {
 
             //do our first time setup here
             System.out.println("It's our first run!");
+            //TODO: create a layout for first-time tutorial
 
             //set first run to false
             prefs.edit().putBoolean("firstRun", false).commit();

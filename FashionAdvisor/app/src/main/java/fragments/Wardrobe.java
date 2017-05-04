@@ -12,6 +12,7 @@ import cosc625.fashionadvisor.R;
  * Created by Matt on 5/4/17.
  */
 
+//TODO: Allow users to modify / add clothing here
 public class Wardrobe extends Fragment {
 
     public Wardrobe() {
