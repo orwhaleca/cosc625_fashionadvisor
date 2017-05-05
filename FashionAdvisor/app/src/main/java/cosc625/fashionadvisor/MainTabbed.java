@@ -2,16 +2,10 @@ package cosc625.fashionadvisor;
 
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Window;
 
-import java.util.ArrayList;
-import java.util.List;
 
 import fragments.*;
 
@@ -20,6 +14,11 @@ public class MainTabbed extends AppCompatActivity  {
     private Toolbar toolbar;
     private TabLayout tabLayout;
     private ViewPager viewPager;
+    private int[] tabIcons = {
+            R.drawable.ic_action_home,
+            R.drawable.ic_action_calendar,
+            R.drawable.ic_action_wardrobe,
+            R.drawable.ic_action_settings };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +35,7 @@ public class MainTabbed extends AppCompatActivity  {
 
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
+        setTabIcons();
 
         /* default code
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -51,7 +51,6 @@ public class MainTabbed extends AppCompatActivity  {
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        //TODO: create icons for these tabs and use those instead
         adapter.addFragment(new Today(), "ONE");
         adapter.addFragment(new Plan(), "TWO");
         adapter.addFragment(new Wardrobe(), "THREE");
@@ -59,34 +58,14 @@ public class MainTabbed extends AppCompatActivity  {
         viewPager.setAdapter(adapter);
     }
 
-    //TODO: Separate this nested class into its own file
-    class ViewPagerAdapter extends FragmentPagerAdapter {
-        private final List<Fragment> mFragmentList = new ArrayList<>();
-        private final List<String> mFragmentTitleList = new ArrayList<>();
-
-        public ViewPagerAdapter(FragmentManager manager) {
-            super(manager);
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            return mFragmentList.get(position);
-        }
-
-        @Override
-        public int getCount() {
-            return mFragmentList.size();
-        }
-
-        public void addFragment(Fragment fragment, String title) {
-            mFragmentList.add(fragment);
-            mFragmentTitleList.add(title);
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return mFragmentTitleList.get(position);
+    /**
+     * This method relies on the arrow tabIcons to have the same
+     * length as our tabLayout has number of tabs. When refactoring
+     * tabs and tab layout, this method may also need evolved
+     */
+    private void setTabIcons() {
+        for(int i = 0; i < tabIcons.length; i++) {
+            tabLayout.getTabAt(i).setIcon(tabIcons[i]);
         }
     }
-
 }
