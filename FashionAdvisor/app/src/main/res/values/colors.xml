@@ -8,3 +8,5 @@
     <color name="navigationBarColor">#000000</color>
     <color name="backgroundSalmon">#FF4F48</color>
 </resources>
+
+<!-- TODO: toolbar and notification bar are similar colors and it bugs me -->

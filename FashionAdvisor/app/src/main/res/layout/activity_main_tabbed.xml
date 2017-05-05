@@ -10,8 +10,6 @@
         tools:context="cosc625.fashionadvisor.MainTabbed"
      -->
 
-    <!-- TODO: remove bar at the top with class name and back button -->
-
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
