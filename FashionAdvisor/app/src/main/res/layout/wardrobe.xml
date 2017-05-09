@@ -27,4 +27,16 @@
         app:elevation="8dp"
         app:fabSize="normal"
         app:srcCompat="@android:drawable/ic_input_add" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/myText"
+        android:layout_marginBottom="101dp"
+        android:layout_marginEnd="109dp"
+        android:layout_marginRight="109dp"
+        android:layout_toLeftOf="@+id/addClothingButton"
+        android:layout_toStartOf="@+id/addClothingButton"
+        app:srcCompat="@android:drawable/presence_busy" />
 </RelativeLayout>
