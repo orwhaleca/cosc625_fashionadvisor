@@ -10,9 +10,11 @@ import cosc625.fashionadvisor.R;
 
 /**
  * Created by Matt on 5/4/17.
+ * Modified by Alison on 5/10/17.
  */
 
 //TODO: Implement user settings - please use clothing.Temperature to define ranges of the temp slider
+//TODO: Make buttons do things
 public class Settings extends Fragment {
 
     public Settings() {

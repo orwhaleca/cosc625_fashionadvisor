@@ -9,4 +9,9 @@
     <string name="plan">This is the plan tab</string>
     <string name="wardrobe">This is the wardrobe tab</string>
     <string name="settings">This is the settings tab</string>
+    <string name="edit_name">Enter a name</string>
+    <string name="name_button">Enter</string>
+    <string name="radio_male">Male</string>
+    <string name="radio_female">Female</string>
+    <string name="radio_title">Gender</string>
 </resources>
