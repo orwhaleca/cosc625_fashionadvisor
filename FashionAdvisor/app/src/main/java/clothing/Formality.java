@@ -1,12 +1,13 @@
-package cosc625.fashionadvisor;
+package clothing;
 
 /**
  * Created by Matt on 4/12/17.
  */
 
-public enum Formality {
+enum Formality {
     FORMAL,
     BUSINESS_CASUAL,
     INFORMAL,
-    SLEEPWEAR;
+    ATHLETIC,
+    SLEEPWEAR
 }

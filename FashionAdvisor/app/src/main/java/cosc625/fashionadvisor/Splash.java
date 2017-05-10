@@ -7,7 +7,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.util.Map;
+
+import clothing.Article;
 
 public class Splash extends AppCompatActivity {
 
@@ -24,18 +30,30 @@ public class Splash extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        printPrefs();//for debugging
+        handleFirstRun();
+        readClothes();
 
+        //any additional setup steps
+        //switch to tabbed view
+        Intent intent = new Intent(this, MainTabbed.class);
+        startActivity(intent);
+    }
+
+    private void printPrefs() {
         Map<String, ?> m = prefs.getAll();
 
         for (Map.Entry<String, ?> entry : m.entrySet()) {
-            Log.i("map values",entry.getKey() + ": " +
+            Log.i("map values", entry.getKey() + ": " +
                     entry.getValue().toString());
         }
+    }
 
-        /* check shared preferences for our app to see if this is the first run
-         * (we'll set first run to false after the tutorial screen close button is pressed.)
-         */
-        if(prefs.getBoolean("firstRun", true)) {
+    /** check shared preferences for our app to see if this is the first run
+     * (we'll set first run to false after the tutorial screen close button is pressed.)
+     */
+    private void handleFirstRun() {
+        if (prefs.getBoolean("firstRun", true)) {
 
             //do our first time setup here
             System.out.println("It's our first run!");
@@ -44,11 +62,32 @@ public class Splash extends AppCompatActivity {
             //set first run to false
             prefs.edit().putBoolean("firstRun", false).commit();
         }
+    }
 
-        //read JSON files for clothes entries
-        //any additional setup step
-        //switch to tabbed view
-        Intent intent = new Intent(this, MainTabbed.class);
-        startActivity(intent);
+    private void readClothes() {
+        //read serialized files for clothes entries
+        FileInputStream fInputStream;
+        ObjectInputStream inputStream;
+
+        //TODO: need a global variable stored in preferences that keeps track of the highest id #
+        for (int i = 0; i < 999; i++) {
+            try {
+                //read in the files by id number
+                fInputStream = getApplicationContext().openFileInput(String.valueOf(i));
+                inputStream = new ObjectInputStream(fInputStream);
+                //TODO: maybe this should be article.save()
+                Closet.add((Article) inputStream.readObject());
+
+            } catch (FileNotFoundException e) {
+                System.out.println("File was not found: " + e.getLocalizedMessage());
+                continue;
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+                System.out.println("An article's class was not read correctly at startup.");
+            }
+
+        }//end for
     }
 }

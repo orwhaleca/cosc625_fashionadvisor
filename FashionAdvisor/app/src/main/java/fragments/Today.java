@@ -13,6 +13,7 @@ import cosc625.fashionadvisor.R;
  */
 
 //TODO: create our outfit matching algorithm here
+//TODO: like/dislike system to learn from user input
 public class Today extends Fragment {
 
     public Today() {
