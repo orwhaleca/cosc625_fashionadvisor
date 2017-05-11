@@ -2,18 +2,31 @@ package cosc625.fashionadvisor;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
+
+import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.util.Map;
 
 import clothing.Article;
+import clothing.Formality;
+import clothing.Shirt;
+import clothing.Temperature;
+import clothing.Texture;
 
 public class Splash extends AppCompatActivity {
 
@@ -25,6 +38,11 @@ public class Splash extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
 
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
+
+        Shirt shirt = new Shirt(getApplicationContext(), Texture.COTTON, Temperature.WARM,
+                Formality.INFORMAL, "firstShirt", 123,
+                Bitmap.createBitmap(100, 100, Bitmap.Config.ALPHA_8), false);
+        shirt.save();
     }
 
     @Override
@@ -66,28 +84,64 @@ public class Splash extends AppCompatActivity {
 
     private void readClothes() {
         //read serialized files for clothes entries
-        FileInputStream fInputStream;
-        ObjectInputStream inputStream;
+        InputStream input;
+        InputStreamReader inputStreamReader;
+        BufferedReader bufferedReader;
+        StringBuilder stringBuilder = new StringBuilder();
+        String json, temp;
+        JsonObject jsonObject;
 
-        //TODO: need a global variable stored in preferences that keeps track of the highest id #
-        for (int i = 0; i < 999; i++) {
+        int maxID = prefs.getInt("HighestID", -1) + 1;
+        for (int i = 0; i < maxID; i++) {
             try {
                 //read in the files by id number
-                fInputStream = getApplicationContext().openFileInput(String.valueOf(i));
-                inputStream = new ObjectInputStream(fInputStream);
-                //TODO: maybe this should be article.save()
-                Closet.add((Article) inputStream.readObject());
+                input = getApplicationContext().openFileInput(String.valueOf(i));
+                if ( input != null ) {
+                    System.out.println("Read from file: " + i);
+                    inputStreamReader = new InputStreamReader(input);
+                    bufferedReader = new BufferedReader(inputStreamReader);
+
+                    while( (temp = bufferedReader.readLine()) != null) {
+                        stringBuilder.append(temp);
+                    }
+
+                    json = stringBuilder.toString();
+
+                    //parse json using Gson
+                    Gson gson = new Gson();
+                    jsonObject = gson.fromJson(json, JsonObject.class);
+
+                    temp = jsonObject.getAsJsonPrimitive("type").getAsString();
+
+                    switch (temp) {
+                        case "Shirt" :
+                            //make a shirt and load it
+                            makeShirt(jsonObject);
+                            break;
+                        case "Pants" :
+                            //make pants and load them
+                            makePants(jsonObject);
+                            break;
+                    }
+                }//end if input!=null
 
             } catch (FileNotFoundException e) {
                 System.out.println("File was not found: " + e.getLocalizedMessage());
                 continue;
             } catch (IOException e) {
                 e.printStackTrace();
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-                System.out.println("An article's class was not read correctly at startup.");
             }
-
         }//end for
+    }
+
+    private void makeShirt(JsonObject jsonObject) {
+        //TODO: implement me
+        // we can iterate over .getClass().getDeclaredFields() to get fields specific to
+        // a class and not inherited fields to automatically append the correct
+        // fields to the json file. We can use this same logic to correctly read that file
+    }
+
+    private void makePants(JsonObject jsonObject) {
+        //TODO: implement me
     }
 }
