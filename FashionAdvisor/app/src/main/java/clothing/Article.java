@@ -8,6 +8,7 @@ import android.preference.PreferenceManager;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 
 import com.google.gson.*;
 
@@ -131,10 +132,11 @@ public abstract class Article {
 
         Field[] fields = this.getClass().getDeclaredFields();
         for (Field f : fields) {
-            n = f.getName();
             try {
-                if(n.equals("$change") || n.equals("serialVersionUID")) continue; //ignore - a bug?
-                temp = temp.concat(", " + n + ": " + f.get(this).toString());
+                //if(n.equals("$change") || n.equals("serialVersionUID")) continue; //ignore - a bug?
+                if(Modifier.isStatic(f.getModifiers())) continue;//ignore
+                if(!f.isAccessible()) f.setAccessible(true);
+                temp = temp.concat(", " + f.getName() + ": " + f.get(this).toString());
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
                 continue;
