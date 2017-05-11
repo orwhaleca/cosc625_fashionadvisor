@@ -125,13 +125,16 @@ public abstract class Article {
     @Override
     public String toString() {
         //TODO: for efficiency, this should be StringBuilder
+        String n;
         String temp = "id: " + id + ", texture: " + texture + ", idealTemp: " + idealTemp
                 + ", formality: " + formality + ", name: " + name + ", color: #" + color;
 
         Field[] fields = this.getClass().getDeclaredFields();
         for (Field f : fields) {
+            n = f.getName();
             try {
-                temp = temp.concat(", " + f.getName() + ": " + f.get(this).toString());
+                if(n.equals("$change") || n.equals("serialVersionUID")) continue; //ignore - a bug?
+                temp = temp.concat(", " + n + ": " + f.get(this).toString());
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
                 continue;
