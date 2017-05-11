@@ -13,7 +13,7 @@ import android.graphics.Bitmap;
 public class Shirt extends Top {
 
     //If this is not public, it is not seen by getDeclaredFields()
-    //seems to be a bug in Java 8
+    //seems to be a bug in the Android Runtime on my Mac?
     public boolean longSleeves;
 
     public Shirt(Context con, Texture tex, Temperature temp, Formality form,

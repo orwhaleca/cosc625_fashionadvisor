@@ -124,11 +124,11 @@ public abstract class Article {
 
     @Override
     public String toString() {
-        //for efficiency, this should be StringBuilder and every + should be append()
+        //TODO: for efficiency, this should be StringBuilder
         String temp = "id: " + id + ", texture: " + texture + ", idealTemp: " + idealTemp
                 + ", formality: " + formality + ", name: " + name + ", color: #" + color;
 
-        Field[] fields = this.getClass().getFields();
+        Field[] fields = this.getClass().getDeclaredFields();
         for (Field f : fields) {
             try {
                 temp = temp.concat(", " + f.getName() + ": " + f.get(this).toString());
