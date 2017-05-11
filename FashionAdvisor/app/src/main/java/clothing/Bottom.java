@@ -5,6 +5,9 @@ import android.graphics.Bitmap;
 
 /**
  * Created by Matt on 5/9/17.
+ *
+ * This class exists to classify the 'slot' of an article of clothing
+ * in the Today layout
  */
 
 public abstract class Bottom extends Article {
