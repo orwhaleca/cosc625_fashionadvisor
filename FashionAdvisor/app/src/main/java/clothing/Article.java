@@ -1,49 +1,37 @@
 package clothing;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.preference.PreferenceManager;
 
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
+import java.io.OutputStreamWriter;
+import java.lang.reflect.Field;
 
+import com.google.gson.*;
+
+import cosc625.fashionadvisor.BitmapHandler;
 import cosc625.fashionadvisor.Closet;
 
 /**
  * Created by Matt on 5/9/17.
+ * <p>
+ * Super class for all clothing classes
  */
 
-public abstract class Article implements Serializable {
+public abstract class Article {
 
-    //TODO: add data members shared by all clothing
-    Context context;
-    Texture texture;
-    Temperature idealTemp;
-    Formality formality;
-    String name;
-    public int id;     //start at 0 and go up. Maybe our global clothes list has some nextID() to use
-    int color;  //expressed as hex RGB
-    Bitmap image;
-    /*maybe we store the image in the article rather than the path?
-    can we compress this to JSON?
-    we can store the objects directly without JSON for now:
-    http://stackoverflow.com/questions/4118751/how-do-i-serialize-an-object-and-save-it-to-a-file-in-android
-    */
+    protected Context context;
+    protected int id;//start at 0 and go up.
+    private Texture texture;
+    private Temperature idealTemp;
+    private Formality formality;
+    private String name;
+    private int color;  //expressed as hex RGB
+    private Bitmap image;
+    JsonObject articleData;
 
-    /**
-     * During deserialization, the fields of non-serializable classes will be initialized
-     * using the public or protected no-arg constructor of the class. A no-arg constructor
-     * must be accessible to the subclass that is serializable. The fields of serializable
-     * subclasses will be restored from the stream.
-     */
-    public Article() {
-
-    }
-
-    // having context be something that gets saved but can be different when loaded seems dangerous,
-    // may need to implement some other serialization method like shown here
-    // https://developer.android.com/reference/java/io/Serializable.html
     public Article(Context con, Texture tex, Temperature temp, Formality form, String n, int col, Bitmap img) {
         context = con;
         texture = tex;
@@ -53,48 +41,103 @@ public abstract class Article implements Serializable {
         color = col;
         image = img;
         //assign an id
+        String highestID = "highestID";
+        SharedPreferences prefs;
+        prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        id = prefs.getInt(highestID, -1) + 1;//minimum id is 0, normal id is current highestID + 1
+        articleData = new JsonObject();
+        articleData.addProperty("type", getClass().getName());
+    }
+
+    public int getID() {
+        return id;
+    }
+
+    public Context getContext() {
+        return context;
     }
 
     /**
      * This method will save the current article of clothing to the disk
-     * and also add it to the current working set of clothing.
+     * and also add it to the current working set of clothing. For most areas
+     * of the application, save() should be used. Only when loading in files
+     * from the disk is it acceptable to use load() instead.
      *
-     * @return  positive integer id if save successful, -1 if save failed
+     * @return positive integer id if save successful, -1 if save failed
      */
     public int save() {
-        /*  TODO: implement a global class which holds all the working clothing at run-time.
-            This class should also read in all the clothing files at startup in Splash.
-         */
-        try {
-            FileOutputStream fOutputStream = context.openFileOutput(String.valueOf(id), Context.MODE_PRIVATE);
-            ObjectOutputStream outputStream = new ObjectOutputStream(fOutputStream);
-            outputStream.writeObject(this);
-            outputStream.close();
-            fOutputStream.close();
-            if(Closet.contains(id)) {
-                //update this article in the closet
-                Closet.update(id, this);
-            } else {
-                //add this new article to the closet
-                Closet.add(this);
+        Gson gson = new Gson();
+
+        //Since Article is abstract, the only objects calling save() are subclasses
+        //.getFields() will not include inherited fields, so the fields of article
+        //are statically added below.
+        Field[] fields = this.getClass().getFields();
+        for (Field f : fields) {
+            try {
+                if (f.getType() == Integer.class) {
+                    articleData.addProperty(f.getName(), f.getInt(this));
+                } else if (f.getType() == Boolean.class) {
+                    articleData.addProperty(f.getName(), f.getBoolean(this));
+                } else if (f.getType() == String.class) {
+                    articleData.addProperty(f.getName(), (String) f.get(this));
+                } else {
+                    //reserved for possible future data types
+                }
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+                continue;
             }
-            return id;
+        }
+
+        articleData.addProperty("texture", texture.name());
+        articleData.addProperty("idealTemp", idealTemp.name());
+        articleData.addProperty("formality", formality.name());
+        articleData.addProperty("name", name);
+        articleData.addProperty("color", color);
+        articleData.addProperty("img", BitmapHandler.BitMapToString(image));
+
+        String payload = gson.toJson(articleData);
+
+        try {
+            OutputStreamWriter writer = new OutputStreamWriter(
+                    context.openFileOutput(String.valueOf(id), Context.MODE_PRIVATE));
+            writer.write(payload);
 
         } catch (IOException e) {
+            e.printStackTrace();
             return -1;
         }
+
+        return load();
     }
 
-    /**
-     * Determines if a de-serialized file is compatible with this class.
-     *
-     * Maintainers must change this value if and only if the new version
-     * of this class is not compatible with old versions. See Sun docs
-     * for <a href=http://java.sun.com/products/jdk/1.1/docs/guide
-     * /serialization/spec/version.doc.html> details. </a>
-     *
-     * Not necessary to include in first version of the class, but
-     * included here as a reminder of its importance.
-     */
-    private static final long serialVersionUID = 7526471155622776147L;
+    public int load() {
+        if (Closet.contains(id)) {
+            //update this article in the closet
+            Closet.update(id, this);
+        } else {
+            //add this new article to the closet
+            Closet.add(this);
+        }
+        return id;
+    }
+
+    @Override
+    public String toString() {
+        //for efficiency, this should be StringBuilder and every + should be append()
+        String temp = "id: " + id + ", texture: " + texture + ", idealTemp: " + idealTemp
+                + ", formality: " + formality + ", name: " + name + ", color: #" + color;
+
+        Field[] fields = this.getClass().getFields();
+        for (Field f : fields) {
+            try {
+                temp = temp.concat(", " + f.getName() + ": " + f.get(this).toString());
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+                continue;
+            }
+        }
+
+        return temp;
+    }
 }

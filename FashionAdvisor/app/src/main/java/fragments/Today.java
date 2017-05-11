@@ -5,7 +5,11 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
+import cosc625.fashionadvisor.Closet;
 import cosc625.fashionadvisor.R;
 
 /**
@@ -15,6 +19,8 @@ import cosc625.fashionadvisor.R;
 //TODO: create our outfit matching algorithm here
 //TODO: like/dislike system to learn from user input
 public class Today extends Fragment {
+
+    TextView textView;
 
     public Today() {
         //empty constructor
@@ -30,7 +36,13 @@ public class Today extends Fragment {
                              ViewGroup container,
                              Bundle savedInstanceState) {
         //Inflate the layout for this fragment
-        return inflater.inflate(R.layout.today, container, false);
+        View view = inflater.inflate(R.layout.today, container, false);
+        textView = (TextView) view.findViewById(R.id.text);
+
+        textView.setText(Closet.getString());
+        System.out.println("Closet: " + Closet.getString());
+
+        return view;
     }
 
 }
