@@ -24,6 +24,7 @@ import java.util.Map;
 
 import clothing.Article;
 import clothing.Formality;
+import clothing.Pants;
 import clothing.Shirt;
 import clothing.Temperature;
 import clothing.Texture;
@@ -39,10 +40,12 @@ public class Splash extends AppCompatActivity {
 
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
+        /*
         Shirt shirt = new Shirt(getApplicationContext(), Texture.COTTON, Temperature.WARM,
                 Formality.INFORMAL, "firstShirt", 123,
                 Bitmap.createBitmap(100, 100, Bitmap.Config.ALPHA_8), false);
         shirt.save();
+        */
     }
 
     @Override
@@ -91,13 +94,13 @@ public class Splash extends AppCompatActivity {
         String json, temp;
         JsonObject jsonObject;
 
-        int maxID = prefs.getInt("HighestID", -1) + 1;
+        int maxID = prefs.getInt("highestID", -1) + 1;
         for (int i = 0; i < maxID; i++) {
             try {
                 //read in the files by id number
                 input = getApplicationContext().openFileInput(String.valueOf(i));
                 if ( input != null ) {
-                    System.out.println("Read from file: " + i);
+                    System.out.print("Read from file: " + i);
                     inputStreamReader = new InputStreamReader(input);
                     bufferedReader = new BufferedReader(inputStreamReader);
 
@@ -107,22 +110,14 @@ public class Splash extends AppCompatActivity {
 
                     json = stringBuilder.toString();
 
+                    System.out.println(" " + json);
+
                     //parse json using Gson
                     Gson gson = new Gson();
                     jsonObject = gson.fromJson(json, JsonObject.class);
 
-                    temp = jsonObject.getAsJsonPrimitive("type").getAsString();
+                    makeArticle(jsonObject);
 
-                    switch (temp) {
-                        case "Shirt" :
-                            //make a shirt and load it
-                            makeShirt(jsonObject);
-                            break;
-                        case "Pants" :
-                            //make pants and load them
-                            makePants(jsonObject);
-                            break;
-                    }
                 }//end if input!=null
 
             } catch (FileNotFoundException e) {
@@ -134,14 +129,42 @@ public class Splash extends AppCompatActivity {
         }//end for
     }
 
+    private void makeArticle(JsonObject jsonObject) {
+        String type = jsonObject.getAsJsonPrimitive("type").getAsString();
+
+        switch (type) {
+            case "clothing.Shirt" :
+                //make a shirt and load it
+                makeShirt(jsonObject);
+                break;
+            case "clothing.Pants" :
+                //make pants and load them
+                makePants(jsonObject);
+                break;
+        }
+    }
+
     private void makeShirt(JsonObject jsonObject) {
-        //TODO: implement me
-        // we can iterate over .getClass().getDeclaredFields() to get fields specific to
-        // a class and not inherited fields to automatically append the correct
-        // fields to the json file. We can use this same logic to correctly read that file
+        new Shirt(jsonObject.getAsJsonPrimitive("id").getAsInt(),
+                getApplicationContext(),
+                Texture.valueOf(jsonObject.getAsJsonPrimitive("texture").getAsString()),
+                Temperature.valueOf(jsonObject.getAsJsonPrimitive("idealTemp").getAsString()),
+                Formality.valueOf(jsonObject.getAsJsonPrimitive("formality").getAsString()),
+                jsonObject.getAsJsonPrimitive("name").getAsString(),
+                jsonObject.getAsJsonPrimitive("color").getAsInt(),
+                BitmapHandler.StringToBitMap(jsonObject.getAsJsonPrimitive("img").getAsString()),
+                jsonObject.getAsJsonPrimitive("longSleeves").getAsBoolean()).load();
     }
 
     private void makePants(JsonObject jsonObject) {
-        //TODO: implement me
+        new Pants(jsonObject.getAsJsonPrimitive("id").getAsInt(),
+                getApplicationContext(),
+                Texture.valueOf(jsonObject.getAsJsonPrimitive("texture").getAsString()),
+                Temperature.valueOf(jsonObject.getAsJsonPrimitive("idealTemp").getAsString()),
+                Formality.valueOf(jsonObject.getAsJsonPrimitive("formality").getAsString()),
+                jsonObject.getAsJsonPrimitive("name").getAsString(),
+                jsonObject.getAsJsonPrimitive("color").getAsInt(),
+                BitmapHandler.StringToBitMap(jsonObject.getAsJsonPrimitive("img").getAsString()),
+                jsonObject.getAsJsonPrimitive("shorts").getAsBoolean()).load();
     }
 }

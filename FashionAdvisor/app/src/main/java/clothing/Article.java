@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.preference.PreferenceManager;
 
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.lang.reflect.Field;
@@ -50,6 +51,19 @@ public abstract class Article {
         articleData.addProperty("type", getClass().getName());
     }
 
+    public Article(int id, Context con, Texture tex, Temperature temp, Formality form, String n, int col, Bitmap img) {
+        context = con;
+        texture = tex;
+        idealTemp = temp;
+        formality = form;
+        name = n;
+        color = col;
+        image = img;
+        this.id = id;
+        articleData = new JsonObject();
+        articleData.addProperty("type", getClass().getName());
+    }
+
     public int getID() {
         return id;
     }
@@ -72,13 +86,16 @@ public abstract class Article {
         //Since Article is abstract, the only objects calling save() are subclasses
         //.getFields() will not include inherited fields, so the fields of article
         //are statically added below.
-        Field[] fields = this.getClass().getFields();
+        Field[] fields = this.getClass().getDeclaredFields();
         for (Field f : fields) {
             try {
+                if(Modifier.isStatic(f.getModifiers())) continue;//ignore
+                if(!f.isAccessible()) f.setAccessible(true);
+
                 if (f.getType() == Integer.class) {
-                    articleData.addProperty(f.getName(), f.getInt(this));
+                    articleData.addProperty(f.getName(), (int) f.get(this));
                 } else if (f.getType() == Boolean.class) {
-                    articleData.addProperty(f.getName(), f.getBoolean(this));
+                    articleData.addProperty(f.getName(), (boolean) f.get(this));
                 } else if (f.getType() == String.class) {
                     articleData.addProperty(f.getName(), (String) f.get(this));
                 } else {
@@ -90,6 +107,7 @@ public abstract class Article {
             }
         }
 
+        articleData.addProperty("id", id);
         articleData.addProperty("texture", texture.name());
         articleData.addProperty("idealTemp", idealTemp.name());
         articleData.addProperty("formality", formality.name());
@@ -100,9 +118,12 @@ public abstract class Article {
         String payload = gson.toJson(articleData);
 
         try {
-            OutputStreamWriter writer = new OutputStreamWriter(
+            OutputStreamWriter streamWriter = new OutputStreamWriter(
                     context.openFileOutput(String.valueOf(id), Context.MODE_PRIVATE));
-            writer.write(payload);
+            BufferedWriter bufferedWriter = new BufferedWriter(streamWriter);
+            bufferedWriter.write(payload);
+            bufferedWriter.close();
+            System.out.println("File written: " + id + " " + payload);
 
         } catch (IOException e) {
             e.printStackTrace();

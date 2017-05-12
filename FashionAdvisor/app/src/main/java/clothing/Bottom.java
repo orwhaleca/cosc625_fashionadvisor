@@ -15,4 +15,8 @@ public abstract class Bottom extends Article {
     public Bottom(Context con, Texture tex, Temperature temp, Formality form, String n, int col, Bitmap img) {
         super(con, tex, temp, form, n, col, img);
     }
+
+    public Bottom(int id, Context con, Texture tex, Temperature temp, Formality form, String n, int col, Bitmap img) {
+        super(id, con, tex, temp, form, n, col, img);
+    }
 }

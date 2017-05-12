@@ -16,4 +16,8 @@ public abstract class Top extends Article {
         super(con, tex, temp, form, n, col, img);
     }
 
+    public Top(int id, Context con, Texture tex, Temperature temp, Formality form, String n, int col, Bitmap img) {
+        super(id, con, tex, temp, form, n, col, img);
+    }
+
 }

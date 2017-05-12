@@ -9,10 +9,19 @@ import android.graphics.Bitmap;
 
 public class Pants extends Bottom {
 
-    private boolean shorts;
+    private Boolean shorts;
 
-    public Pants(Context con, Texture tex, Temperature temp, Formality form, String n, int col, Bitmap img) {
+    //we could just have one constructor and have some default id # that triggers one to generate
+    public Pants(Context con, Texture tex, Temperature temp, Formality form,
+                 String n, int col, Bitmap img, boolean isShorts) {
         super(con, tex, temp, form, n, col, img);
+        shorts = isShorts;
+    }
+
+    public Pants(int id, Context con, Texture tex, Temperature temp, Formality form,
+                 String n, int col, Bitmap img, boolean isShorts) {
+        super(id, con, tex, temp, form, n, col, img);
+        shorts = isShorts;
     }
 
 }

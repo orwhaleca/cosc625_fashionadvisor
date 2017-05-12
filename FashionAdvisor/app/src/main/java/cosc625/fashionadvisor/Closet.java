@@ -34,7 +34,7 @@ public final class Closet {
         //then if the new article id is the greatest we've seen,
         //update this value
         if(id > prefs.getInt(highestID, -1)) {
-            prefs.edit().putInt(highestID, id);
+            prefs.edit().putInt(highestID, id).commit();
         }
     }
 
