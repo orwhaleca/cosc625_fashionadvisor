@@ -154,8 +154,8 @@ public abstract class Article {
         Field[] fields = this.getClass().getDeclaredFields();
         for (Field f : fields) {
             try {
-                //if(n.equals("$change") || n.equals("serialVersionUID")) continue; //ignore - a bug?
-                if(Modifier.isStatic(f.getModifiers())) continue;//ignore
+                //if(n.equals("$change") || n.equals("serialVersionUID")) continue; //ignore
+                if(Modifier.isStatic(f.getModifiers())) continue;//ignore - instant-run injects a bunch of shit and ruins everything
                 if(!f.isAccessible()) f.setAccessible(true);
                 temp = temp.concat(", " + f.getName() + ": " + f.get(this).toString());
             } catch (IllegalAccessException e) {

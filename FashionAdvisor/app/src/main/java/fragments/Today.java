@@ -42,6 +42,10 @@ public class Today extends Fragment {
         textView.setText(Closet.getString());
         System.out.println("Closet: " + Closet.getString());
 
+        //TODO: Closet method to get the lists of tops and bottoms
+
+        //TODO: add button and get button click event here
+
         return view;
     }
 
