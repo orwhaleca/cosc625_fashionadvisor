@@ -22,4 +22,7 @@
         <item>Shirt</item>
         <item>Pants</item>
     </string-array>
+    <string name="title_type_spinner">Type</string>
+    <string name="title_temp_slider">Temperature Range</string>
+    <string name="title_color_picker">Color</string>
 </resources>

@@ -9,7 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 import com.github.danielnilsson9.colorpickerview.*;
-import com.yahoo.mobile.client.android.util.rangeseekbar.*;
+import org.florescu.android.rangeseekbar.*;
 
 import clothing.*;
 
