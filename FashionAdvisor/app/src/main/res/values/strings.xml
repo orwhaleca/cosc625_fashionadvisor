@@ -17,4 +17,9 @@
     <string name="settings_confirm">Confirm</string>
     <string name="name_default">Name</string>
     <string name="radio_other">Other</string>
+    <string name="add_item_name">Enter Item Name:</string>
+    <string-array name = "item_types">
+        <item>Shirt</item>
+        <item>Pants</item>
+    </string-array>
 </resources>

@@ -3,7 +3,8 @@
     package="cosc625.fashionadvisor">
 
     <!-- <uses-permission android:name="android.permission.CAMERA"> </uses-permission> -->
-    <uses-feature android:name="android.hardware.camera"
+    <uses-feature
+        android:name="android.hardware.camera"
         android:required="true" />
 
     <application
@@ -24,8 +25,8 @@
         <activity
             android:name=".MainTabbed"
             android:label="@string/title_activity_main_tabbed"
-            android:theme="@style/FashionTheme"></activity>
-
+            android:theme="@style/FashionTheme" />
+        <activity android:name=".AddItemActivity"></activity>
     </application>
 
 </manifest>

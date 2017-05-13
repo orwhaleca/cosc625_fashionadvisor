@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import cosc625.fashionadvisor.AddItemActivity;
 import cosc625.fashionadvisor.PermissionHandler;
 import cosc625.fashionadvisor.R;
 
@@ -58,7 +59,9 @@ public class Wardrobe extends Fragment {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addPhotoClick(v);
+                //addPhotoClick(v);
+                Intent addItem = new Intent(getActivity(), AddItemActivity.class);
+                startActivity(addItem);
             }
         });
 
