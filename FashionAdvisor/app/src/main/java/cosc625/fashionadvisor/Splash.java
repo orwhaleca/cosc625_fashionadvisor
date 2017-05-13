@@ -103,7 +103,6 @@ public class Splash extends AppCompatActivity {
                     }
 
                     json = stringBuilder.toString();
-
                     System.out.println(" " + json);
 
                     //parse json using Gson

@@ -17,4 +17,9 @@
     <string name="settings_confirm">Confirm</string>
     <string name="name_default">Name</string>
     <string name="radio_other">Other</string>
+    <string name="addSample">Add Sample Closet</string>
+    <string name="tempLabel">Temperature Slider</string>
+    <string name="minTemp">-20F</string>
+    <string name="maxTemp">110F</string>
+    <string name="makeOutfit">Make Outfit</string>
 </resources>
