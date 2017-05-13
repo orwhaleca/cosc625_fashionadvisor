@@ -39,13 +39,6 @@ public class Splash extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
 
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
-
-        /*
-        Shirt shirt = new Shirt(getApplicationContext(), Texture.COTTON, Temperature.WARM,
-                Formality.INFORMAL, "firstShirt", 123,
-                Bitmap.createBitmap(100, 100, Bitmap.Config.ALPHA_8), false);
-        shirt.save();
-        */
     }
 
     @Override
@@ -90,7 +83,7 @@ public class Splash extends AppCompatActivity {
         InputStream input;
         InputStreamReader inputStreamReader;
         BufferedReader bufferedReader;
-        StringBuilder stringBuilder = new StringBuilder();
+        StringBuilder stringBuilder;
         String json, temp;
         JsonObject jsonObject;
 
@@ -103,6 +96,7 @@ public class Splash extends AppCompatActivity {
                     System.out.print("Read from file: " + i);
                     inputStreamReader = new InputStreamReader(input);
                     bufferedReader = new BufferedReader(inputStreamReader);
+                    stringBuilder = new StringBuilder();
 
                     while( (temp = bufferedReader.readLine()) != null) {
                         stringBuilder.append(temp);
