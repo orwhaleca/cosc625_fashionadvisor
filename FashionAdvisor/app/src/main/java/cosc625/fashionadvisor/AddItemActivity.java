@@ -15,6 +15,7 @@ import clothing.*;
 
 //TODO: add temperature range and color picker
 //TODO: create article item from inputs
+//TODO: add image handling
 public class AddItemActivity extends AppCompatActivity {
     EditText itemName;
     Spinner itemType;
