@@ -18,7 +18,7 @@ import cosc625.fashionadvisor.Closet;
 
 /**
  * Created by Matt on 5/9/17.
- * <p>
+ *
  * Super class for all clothing classes
  */
 
@@ -76,6 +76,8 @@ public abstract class Article {
     }
 
     public Bitmap getImage() { return image; }
+
+    public boolean isPatterned() { return patterned; }
 
     /**
      * This method will save the current article of clothing to the disk

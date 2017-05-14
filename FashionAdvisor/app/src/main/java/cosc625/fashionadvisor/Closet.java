@@ -7,6 +7,7 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Random;
+import java.util.Stack;
 
 import clothing.*;
 
@@ -22,6 +23,8 @@ public final class Closet {
     private static String highestID = "highestID";
     private static SharedPreferences prefs;
     private static Hashtable<Integer, Article> hashTable = new Hashtable<Integer, Article>();
+    private static Stack<Top> topStack = new Stack<>();
+    private static Stack<Bottom> botStack = new Stack<>();
 
     private Closet(){ }
 
@@ -56,12 +59,53 @@ public final class Closet {
      */
     public static Article[] getOutFit(int temperature, Formality formality) {
 
-        //switch formality and use flowthrough to add appropriate clothes
+        topStack.clear();
+        botStack.clear();
+
+        Iterator it = hashTable.entrySet().iterator();
+
+        while(it.hasNext()) {
+            Map.Entry pair = (Map.Entry) it.next();
+            Article a = (Article) pair.getValue();
+
+            //switch formality and use flow-through to add appropriate clothes
+            switch(formality) {
+
+                case CASUAL://include casual, athletic, and b.c.
+                    addArticleToStack(a);
+
+                case ATHLETIC://include athletic only
+                    addArticleToStack(a);
+                    if(formality == Formality.ATHLETIC) break;
+                    //else flow into b.c.
+
+                case BUSINESS_CASUAL: //include b.c. and formal
+                    addArticleToStack(a);
+
+                case FORMAL:
+                    addArticleToStack(a);
+                    break;
+
+                case SLEEPWEAR:
+                    addArticleToStack(a);
+            }// end switch
+
+
+        }// end iterator
+
         Article[] articles = new Article[2];
         Random random = new Random();
         articles[0] = hashTable.get(random.nextInt(getSize()));//this is not going to work when articles get deleted
         articles[1] = hashTable.get(random.nextInt(getSize()));
         return articles;
+    }
+
+    private static void addArticleToStack(Article a) {
+        if(a instanceof Top) {
+            topStack.add((Top) a);
+        } else if(a instanceof  Bottom) {
+            botStack.add((Bottom) a);
+        }
     }
 
     public static String getString() {
