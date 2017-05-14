@@ -1,5 +1,6 @@
 package cosc625.fashionadvisor;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.support.v7.app.AppCompatActivity;
@@ -9,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
@@ -21,20 +23,28 @@ import clothing.*;
 //TODO: create article item from inputs
 public class AddItemActivity extends AppCompatActivity {
     EditText itemName;
-    Spinner itemType;
+    Spinner itemType, textureType, idealTemp, formalityLevel;
+    CheckBox patternCheckBox;
     Button confirm;
     ImageView articlePic;
+
+    Intent intent;
+    Bundle bundle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_item);
 
-        Intent intent = getIntent();
-        Bundle bundle = intent.getExtras();
+        intent = getIntent();
+        bundle = intent.getExtras();
 
         itemName = (EditText) findViewById(R.id.addItemName);
         itemType = (Spinner) findViewById(R.id.spinner_items);
+        textureType = (Spinner) findViewById(R.id.textures);
+        idealTemp = (Spinner) findViewById(R.id.idealTemps);
+        formalityLevel = (Spinner) findViewById(R.id.formalityLevel);
+        patternCheckBox = (CheckBox) findViewById(R.id.checkBox);
         confirm = (Button) findViewById(R.id.confirmButton);
         articlePic = (ImageView) findViewById(R.id.articlePicture);
 
@@ -49,12 +59,22 @@ public class AddItemActivity extends AppCompatActivity {
     }
 
     private void createArticleAndExit() {
+        Context context = getApplicationContext();
+        String name = itemName.getText().toString();
+        Texture tex = Texture.valueOf(textureType.getSelectedItem().toString());
+        Temperature ideal = Temperature.valueOf(idealTemp.getSelectedItem().toString());
+        Formality formality = Formality.valueOf(formalityLevel.getSelectedItem().toString());
+        boolean patterned = patternCheckBox.isChecked();
+
+        //we'll ignore shorts/longsleeves since they aren't used in matching right now
         switch (itemType.getSelectedItem().toString()) {
             case "Shirt":
-
+                new Shirt(context, tex, ideal, formality, name, 1, patterned,
+                        (Bitmap) bundle.get("Image"), false).save();
                 break;
             default: //pants
-
+                new Pants(context, tex, ideal, formality, name, 1, patterned,
+                        (Bitmap) bundle.get("Image"), false).save();
         }
         finish();
     }

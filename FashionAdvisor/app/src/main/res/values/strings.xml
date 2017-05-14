@@ -36,4 +36,7 @@
     <string name="casualButton">Casual</string>
     <string name="athleticButton">Athletic</string>
     <string name="sleepwearButton">Sleepwear</string>
+    <string name="textureLabel">Texture</string>
+    <string name="tempsLabel">Ideal Temperature</string>
+    <string name="patternLabel">Has Pattern</string>
 </resources>

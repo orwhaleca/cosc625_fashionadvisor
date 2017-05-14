@@ -19,6 +19,8 @@ import static android.app.Activity.RESULT_OK;
 
 /**
  * Created by Matt on 5/4/17.
+ *
+ * The wardrobe class allows the user to view and edit their saved clothes.
  */
 
 //TODO: Allow users to modify / add clothing here
