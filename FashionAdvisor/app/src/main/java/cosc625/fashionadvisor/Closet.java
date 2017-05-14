@@ -22,7 +22,7 @@ public final class Closet {
 
     private static String highestID = "highestID";
     private static SharedPreferences prefs;
-    private static Hashtable<Integer, Article> hashTable = new Hashtable<Integer, Article>();
+    private static Hashtable<Integer, Article> hashTable = new Hashtable<>();
     private static Stack<Top> topStack = new Stack<>();
     private static Stack<Bottom> botStack = new Stack<>();
 
