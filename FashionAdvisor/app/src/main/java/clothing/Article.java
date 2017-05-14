@@ -32,15 +32,17 @@ public abstract class Article {
     private String name;
     private int color;  //expressed as hex RGB
     private Bitmap image;
+    private boolean patterned;
     JsonObject articleData;
 
-    public Article(Context con, Texture tex, Temperature temp, Formality form, String n, int col, Bitmap img) {
+    public Article(Context con, Texture tex, Temperature temp, Formality form, String n, int col, boolean pattern, Bitmap img) {
         context = con;
         texture = tex;
         idealTemp = temp;
         formality = form;
         name = n;
         color = col;
+        patterned = pattern;
         image = img;
         //assign an id
         String highestID = "highestID";
@@ -51,13 +53,14 @@ public abstract class Article {
         articleData.addProperty("type", getClass().getName());
     }
 
-    public Article(int id, Context con, Texture tex, Temperature temp, Formality form, String n, int col, Bitmap img) {
+    public Article(int id, Context con, Texture tex, Temperature temp, Formality form, String n, int col, boolean pattern, Bitmap img) {
         context = con;
         texture = tex;
         idealTemp = temp;
         formality = form;
         name = n;
         color = col;
+        patterned = pattern;
         image = img;
         this.id = id;
         articleData = new JsonObject();
@@ -71,6 +74,8 @@ public abstract class Article {
     public Context getContext() {
         return context;
     }
+
+    public Bitmap getImage() { return image; }
 
     /**
      * This method will save the current article of clothing to the disk
@@ -113,6 +118,7 @@ public abstract class Article {
         articleData.addProperty("formality", formality.name());
         articleData.addProperty("name", name);
         articleData.addProperty("color", color);
+        articleData.addProperty("patterned", patterned);
         articleData.addProperty("img", BitmapHandler.BitMapToString(image));
 
         String payload = gson.toJson(articleData);
@@ -149,7 +155,8 @@ public abstract class Article {
         //TODO: for efficiency, this should be StringBuilder
         String n;
         String temp = "id: " + id + ", texture: " + texture + ", idealTemp: " + idealTemp
-                + ", formality: " + formality + ", name: " + name + ", color: #" + color;
+                + ", formality: " + formality + ", name: " + name + ", color: #" + color
+                + ", patterned: " + patterned;
 
         Field[] fields = this.getClass().getDeclaredFields();
         for (Field f : fields) {

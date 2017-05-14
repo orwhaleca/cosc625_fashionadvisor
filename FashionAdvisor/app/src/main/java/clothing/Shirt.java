@@ -17,14 +17,14 @@ public class Shirt extends Top {
     public Boolean longSleeves;
 
     public Shirt(Context con, Texture tex, Temperature temp, Formality form,
-                 String n, int col, Bitmap img, boolean longSleeve) {
-        super(con, tex, temp, form, n, col, img);
+                 String n, int col, boolean pattern, Bitmap img, boolean longSleeve) {
+        super(con, tex, temp, form, n, col, pattern, img);
         longSleeves = longSleeve;
     }
 
     public Shirt(int id, Context con, Texture tex, Temperature temp, Formality form,
-                 String n, int col, Bitmap img, boolean longSleeve) {
-        super(id, con, tex, temp, form, n, col, img);
+                 String n, int col, boolean pattern, Bitmap img, boolean longSleeve) {
+        super(id, con, tex, temp, form, n, col, pattern, img);
         longSleeves = longSleeve;
     }
 

@@ -7,7 +7,7 @@ package clothing;
 public enum Formality {
     FORMAL,
     BUSINESS_CASUAL,
-    INFORMAL,
+    CASUAL,
     ATHLETIC,
     SLEEPWEAR
 }

@@ -145,6 +145,7 @@ public class Splash extends AppCompatActivity {
                 Formality.valueOf(jsonObject.getAsJsonPrimitive("formality").getAsString()),
                 jsonObject.getAsJsonPrimitive("name").getAsString(),
                 jsonObject.getAsJsonPrimitive("color").getAsInt(),
+                jsonObject.getAsJsonPrimitive("patterned").getAsBoolean(),
                 BitmapHandler.StringToBitMap(jsonObject.getAsJsonPrimitive("img").getAsString()),
                 jsonObject.getAsJsonPrimitive("longSleeves").getAsBoolean()).load();
     }
@@ -157,6 +158,7 @@ public class Splash extends AppCompatActivity {
                 Formality.valueOf(jsonObject.getAsJsonPrimitive("formality").getAsString()),
                 jsonObject.getAsJsonPrimitive("name").getAsString(),
                 jsonObject.getAsJsonPrimitive("color").getAsInt(),
+                jsonObject.getAsJsonPrimitive("patterned").getAsBoolean(),
                 BitmapHandler.StringToBitMap(jsonObject.getAsJsonPrimitive("img").getAsString()),
                 jsonObject.getAsJsonPrimitive("shorts").getAsBoolean()).load();
     }

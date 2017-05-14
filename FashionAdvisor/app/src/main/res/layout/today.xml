@@ -28,6 +28,7 @@
     <SeekBar
         android:id="@+id/tempBar"
         style="@style/Widget.AppCompat.SeekBar.Discrete"
+        android:progress="80"
         android:layout_width="184dp"
         android:layout_height="30dp"
         android:layout_alignParentLeft="false"
@@ -89,23 +90,84 @@
 
     <ImageView
         android:id="@+id/botView"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_above="@+id/makeOutfit"
-        android:layout_marginBottom="54dp"
-        android:layout_toEndOf="@+id/addSample"
-        android:layout_toRightOf="@+id/addSample"
-        app:srcCompat="@android:drawable/ic_delete" />
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        app:srcCompat="@android:drawable/ic_delete"
+        android:layout_marginTop="18dp"
+        android:layout_below="@+id/sliderTrackText"
+        android:layout_centerHorizontal="true" />
 
     <ImageView
         android:id="@+id/topView"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_above="@+id/sliderTrackText"
-        android:layout_marginBottom="89dp"
-        android:layout_toEndOf="@+id/addSample"
-        android:layout_toRightOf="@+id/addSample"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_marginBottom="11dp"
         android:adjustViewBounds="false"
-        app:srcCompat="@android:drawable/ic_delete" />
+        app:srcCompat="@android:drawable/ic_delete"
+        android:layout_above="@+id/sliderTrackText"
+        android:layout_alignLeft="@+id/botView"
+        android:layout_alignStart="@+id/botView" />
+
+    <RadioGroup
+        android:id="@+id/formalityRadio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/makeOutfit"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+
+        <RadioButton
+            android:id="@+id/formalButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/businessCasualButton"
+            android:layout_toEndOf="@+id/formalityRadio"
+            android:layout_toRightOf="@+id/formalityRadio"
+            android:layout_weight="1"
+            android:text="@string/formalButton" />
+
+        <RadioButton
+            android:id="@+id/businessCasualButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/formalityRadio"
+            android:layout_toEndOf="@+id/casualButton"
+            android:layout_toRightOf="@+id/casualButton"
+            android:layout_weight="1"
+            android:text="@string/businessCasualButton" />
+
+        <RadioButton
+            android:id="@+id/casualButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/formalityRadio"
+            android:layout_alignLeft="@+id/formalityRadio"
+            android:layout_alignStart="@+id/formalityRadio"
+            android:layout_weight="1"
+            android:text="@string/casualButton" />
+
+        <RadioButton
+            android:id="@+id/athleticButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/athleticButton" />
+
+        <RadioButton
+            android:id="@+id/sleepwearButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/sleepwearButton" />
+    </RadioGroup>
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/formalityRadio"
+        android:layout_alignLeft="@+id/formalityRadio"
+        android:layout_alignStart="@+id/formalityRadio"
+        android:text="@string/formalityLabel" />
 
 </RelativeLayout>
