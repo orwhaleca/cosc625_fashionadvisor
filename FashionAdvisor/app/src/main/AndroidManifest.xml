@@ -28,7 +28,7 @@
             android:name=".MainTabbed"
             android:label="@string/title_activity_main_tabbed"
             android:theme="@style/FashionTheme" />
-        <activity android:name=".AddItemActivity"></activity>
+        <activity android:name=".AddItemActivity" />
     </application>
 
 </manifest>
