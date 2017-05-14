@@ -1,15 +1,11 @@
 package fragments;
 
-import android.Manifest;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.annotation.StringRes;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.content.PermissionChecker;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +13,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import cosc625.fashionadvisor.AddItemActivity;
-import cosc625.fashionadvisor.PermissionHandler;
 import cosc625.fashionadvisor.R;
 
 import static android.app.Activity.RESULT_OK;
@@ -59,9 +54,7 @@ public class Wardrobe extends Fragment {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //addPhotoClick(v);
-                Intent addItem = new Intent(getActivity(), AddItemActivity.class);
-                startActivity(addItem);
+                addPhotoClick(v);
             }
         });
 
@@ -69,9 +62,6 @@ public class Wardrobe extends Fragment {
     }
 
     public void addPhotoClick(View view) {
-        System.out.println("Button pressed");
-        textView.setText("You've indicated that you would like to take a picture for the wardrobe.");
-
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (takePictureIntent.resolveActivity(view.getContext().getPackageManager()) != null) {
             startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
@@ -84,6 +74,14 @@ public class Wardrobe extends Fragment {
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
             imageView.setImageBitmap(imageBitmap);
+            textView.setText("Adding article to wardrobe.");
+
+            //load the addItem activity
+            Intent addItem = new Intent(getActivity(), AddItemActivity.class);
+            addItem.putExtra("Image", imageBitmap);
+            startActivity(addItem);
+        } else {
+            textView.setText("Article not added to wardrobe.");
         }
     }
 }

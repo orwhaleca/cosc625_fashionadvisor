@@ -109,13 +109,9 @@ public final class Closet {
         Collections.shuffle(botPile);
 
         Article[] outfit = new Article[2];
-        Top top;
-        Bottom bot;
+        outfit[0] = pileSearch(topPile);
+        outfit[1] = pileSearch(botPile);
 
-        top = (Top) pileSearch(topPile);
-        bot = (Bottom) pileSearch(botPile);
-        outfit[0] = top;
-        outfit[1] = bot;
         return outfit;
     }
 
