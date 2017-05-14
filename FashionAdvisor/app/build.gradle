@@ -23,6 +23,10 @@ android {
     }
 }
 
+repositories {
+    mavenCentral()
+}
+
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
@@ -35,4 +39,6 @@ dependencies {
     compile "com.github.danielnilsson9:color-picker-view:1.4.0@aar"
     compile 'org.florescu.android.rangeseekbar:rangeseekbar-library:0.3.0'
     testCompile 'junit:junit:4.12'
+    compile 'com.android.support:support-v4:25.3.1'
+
 }

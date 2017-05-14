@@ -30,6 +30,9 @@ import cosc625.fashionadvisor.R;
 //TODO: Add firstRun functionality.
 public class Settings extends Fragment {
 
+    public static final int minTemp = -20;
+    public static final int maxTemp = 110;
+
     RadioGroup radioGender;
     EditText nameBox;
     Button enterButton;

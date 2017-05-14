@@ -12,12 +12,12 @@ import android.graphics.Bitmap;
 
 public abstract class Top extends Article {
 
-    public Top(Context con, Texture tex, Temperature temp, Formality form, String n, int col, Bitmap img) {
-        super(con, tex, temp, form, n, col, img);
+    public Top(Context con, Texture tex, Temperature temp, Formality form, String n, int col, boolean pattern, Bitmap img) {
+        super(con, tex, temp, form, n, col, pattern, img);
     }
 
-    public Top(int id, Context con, Texture tex, Temperature temp, Formality form, String n, int col, Bitmap img) {
-        super(id, con, tex, temp, form, n, col, img);
+    public Top(int id, Context con, Texture tex, Temperature temp, Formality form, String n, int col, boolean pattern, Bitmap img) {
+        super(id, con, tex, temp, form, n, col, pattern, img);
     }
 
 }

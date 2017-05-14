@@ -6,18 +6,17 @@ import android.preference.PreferenceManager;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Random;
 
 import clothing.*;
 
 /**
  * Created by Matt on 5/9/17.
+ *
+ * The closet is the internal storage structure used by this app to hold articles
+ * and make matching outfits.
  */
 
-/*
-    Is it worth it to rebuild this closet every time the program is opened?
-    I know it isn't very expensive to do, but I wonder if it would be better
-    to save this object instead...
- */
 public final class Closet {
 
     private static String highestID = "highestID";
@@ -45,6 +44,24 @@ public final class Closet {
     public static void update(Integer id, Article newArticle) {
         remove(id);
         add(newArticle);
+    }
+
+    public static int getSize() { return hashTable.size(); }
+
+    /**
+     * Gets a matching outfit based on our set of criteria and returns it as an Article array.
+     * in returned array, [0] is a Top object and [1] is a Bottom object.
+     *
+     * @return      Array holding articles for every slot. [0] is a top, [1] is a bottom.
+     */
+    public static Article[] getOutFit(int temperature, Formality formality) {
+
+        //switch formality and use flowthrough to add appropriate clothes
+        Article[] articles = new Article[2];
+        Random random = new Random();
+        articles[0] = hashTable.get(random.nextInt(getSize()));//this is not going to work when articles get deleted
+        articles[1] = hashTable.get(random.nextInt(getSize()));
+        return articles;
     }
 
     public static String getString() {

@@ -25,4 +25,15 @@
     <string name="title_type_spinner">Type</string>
     <string name="title_temp_slider">Temperature Range</string>
     <string name="title_color_picker">Color</string>
+    <string name="addSample">Add Sample Closet</string>
+    <string name="tempLabel">Temperature Slider</string>
+    <string name="minTemp">-20F</string>
+    <string name="maxTemp">110F</string>
+    <string name="makeOutfit">Make Outfit</string>
+    <string name="formalityLabel">Formality Level:</string>
+    <string name="formalButton">Formal</string>
+    <string name="businessCasualButton">Business Casual</string>
+    <string name="casualButton">Casual</string>
+    <string name="athleticButton">Athletic</string>
+    <string name="sleepwearButton">Sleepwear</string>
 </resources>
