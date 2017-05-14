@@ -121,12 +121,16 @@ public class Today extends Fragment {
             }
         });
 
-        if(Closet.getSize() > 1) makeOutfit();
+        makeOutfit();
 
         return view;
     }
 
     private void makeOutfit() {
+        if(Closet.getSize() > 1) makeOutfitHelper();
+    }
+
+    private void makeOutfitHelper() {
         Formality formality;
         switch(radioGroup.getCheckedRadioButtonId()) {
             case R.id.formalButton:
@@ -241,7 +245,7 @@ public class Today extends Fragment {
                         false, bitmap, false);
         }
         a.save();
-        if(Closet.getSize() > 1) makeOutfit();
+        makeOutfit();
     }
 
     private class AsyncGetBitmapFromUrl extends AsyncTask<String, Void, Object[]> {

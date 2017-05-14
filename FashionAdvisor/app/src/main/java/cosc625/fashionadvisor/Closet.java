@@ -3,6 +3,7 @@ package cosc625.fashionadvisor;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import java.util.Collections;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Map;
@@ -23,8 +24,8 @@ public final class Closet {
     private static String highestID = "highestID";
     private static SharedPreferences prefs;
     private static Hashtable<Integer, Article> hashTable = new Hashtable<>();
-    private static Stack<Top> topStack = new Stack<>();
-    private static Stack<Bottom> botStack = new Stack<>();
+    private static Stack<Top> topPile = new Stack<>();
+    private static Stack<Bottom> botPile = new Stack<>();
 
     private Closet(){ }
 
@@ -59,8 +60,8 @@ public final class Closet {
      */
     public static Article[] getOutFit(int temperature, Formality formality) {
 
-        topStack.clear();
-        botStack.clear();
+        topPile.clear();
+        botPile.clear();
 
         Iterator it = hashTable.entrySet().iterator();
 
@@ -72,40 +73,65 @@ public final class Closet {
             switch(formality) {
 
                 case CASUAL://include casual, athletic, and b.c.
-                    addArticleToStack(a);
+                    addArticleToPile(a);
 
                 case ATHLETIC://include athletic only
-                    addArticleToStack(a);
+                    addArticleToPile(a);
                     if(formality == Formality.ATHLETIC) break;
                     //else flow into b.c.
 
                 case BUSINESS_CASUAL: //include b.c. and formal
-                    addArticleToStack(a);
+                    addArticleToPile(a);
 
                 case FORMAL:
-                    addArticleToStack(a);
+                    addArticleToPile(a);
                     break;
 
                 case SLEEPWEAR:
-                    addArticleToStack(a);
+                    addArticleToPile(a);
             }// end switch
-
 
         }// end iterator
 
+        return clothesPileShuffle();
+    }
+
+    private static void addArticleToPile(Article a) {
+        if(a instanceof Top) {
+            topPile.add((Top) a);
+        } else if(a instanceof  Bottom) {
+            botPile.add((Bottom) a);
+        }
+    }
+
+    private static Article[] clothesPileShuffle() {
+        Collections.shuffle(topPile);
+        Collections.shuffle(botPile);
+
+        Article[] outfit = new Article[2];
+        Top top;
+        Bottom bot;
+
+        top = (Top) pileSearch(topPile);
+        bot = (Bottom) pileSearch(botPile);
+        outfit[0] = top;
+        outfit[1] = bot;
+        return outfit;
+    }
+
+    private static Article pileSearch(Stack pile) {
+       // while((top = topPile.pop()) != null) {
+           // if(top.)
+       // }
+        /*
         Article[] articles = new Article[2];
         Random random = new Random();
         articles[0] = hashTable.get(random.nextInt(getSize()));//this is not going to work when articles get deleted
         articles[1] = hashTable.get(random.nextInt(getSize()));
         return articles;
-    }
+        */
 
-    private static void addArticleToStack(Article a) {
-        if(a instanceof Top) {
-            topStack.add((Top) a);
-        } else if(a instanceof  Bottom) {
-            botStack.add((Bottom) a);
-        }
+        return (Article) pile.pop();
     }
 
     public static String getString() {
@@ -114,7 +140,10 @@ public final class Closet {
 
         while(it.hasNext()) {
             Map.Entry pair = (Map.Entry) it.next();
-            stringBuilder.append(pair.getKey() + " = " + pair.getValue() + "\r\n");
+            stringBuilder.append(pair.getKey());
+            stringBuilder.append(" = ");
+            stringBuilder.append(pair.getValue());
+            stringBuilder.append("\r\n");
             //it.remove(); // avoids a ConcurrentModificationException
         }
 
