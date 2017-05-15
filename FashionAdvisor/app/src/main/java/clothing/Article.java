@@ -156,23 +156,25 @@ public abstract class Article {
     public String toString() {
         //TODO: for efficiency, this should be StringBuilder
         String n;
-        String temp = "id: " + id + ", texture: " + texture + ", idealTemp: " + idealTemp
+        StringBuilder sb = new StringBuilder();
+        /*String temp = "id: " + id + ", texture: " + texture + ", idealTemp: " + idealTemp
                 + ", formality: " + formality + ", name: " + name + ", color: #" + color
-                + ", patterned: " + patterned;
-
+                + ", patterned: " + patterned;*/
+        sb.append("id: ").append(id).append(", texture: ").append(texture).append(", idealTemp: ").append(idealTemp).append(", formality: ").append(formality).append(", name: ").append(name).append(", color: #").append(color).append(", patterned: ").append(patterned);
         Field[] fields = this.getClass().getDeclaredFields();
         for (Field f : fields) {
             try {
                 //if(n.equals("$change") || n.equals("serialVersionUID")) continue; //ignore
                 if(Modifier.isStatic(f.getModifiers())) continue;//ignore - instant-run injects a bunch of shit and ruins everything
                 if(!f.isAccessible()) f.setAccessible(true);
-                temp = temp.concat(", " + f.getName() + ": " + f.get(this).toString());
+                //temp = temp.concat(", " + f.getName() + ": " + f.get(this).toString());
+                sb.append(",").append(f.getName()).append(": ").append(f.get(this).toString());
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
                 continue;
             }
         }
 
-        return temp;
+        return sb.toString();
     }
 }
