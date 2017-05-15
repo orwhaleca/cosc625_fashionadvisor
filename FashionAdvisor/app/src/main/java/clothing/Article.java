@@ -77,6 +77,14 @@ public abstract class Article {
 
     public Bitmap getImage() { return image; }
 
+    public int getColor() { return color; }
+
+    public Formality getFormality() { return formality; }
+
+    public Texture getTexture() { return texture; }
+
+    public Temperature getIdealTemp() { return idealTemp; }
+
     public boolean isPatterned() { return patterned; }
 
     /**

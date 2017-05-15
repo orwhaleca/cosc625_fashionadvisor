@@ -3,6 +3,7 @@ package cosc625.fashionadvisor;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import java.lang.reflect.Type;
 import java.util.Collections;
 import java.util.Hashtable;
 import java.util.Iterator;
@@ -11,6 +12,8 @@ import java.util.Random;
 import java.util.Stack;
 
 import clothing.*;
+
+import com.mattyork.colours.*;
 
 /**
  * Created by Matt on 5/9/17.
@@ -26,6 +29,9 @@ public final class Closet {
     private static Hashtable<Integer, Article> hashTable = new Hashtable<>();
     private static Stack<Top> topPile = new Stack<>();
     private static Stack<Bottom> botPile = new Stack<>();
+    private static final double minColorDistance = 5;
+    private static final double clashThreshold = 10;
+    private static final double maxColorDistance = 60;
 
     private Closet(){ }
 
@@ -54,11 +60,12 @@ public final class Closet {
 
     /**
      * Gets a matching outfit based on our set of criteria and returns it as an Article array.
-     * in returned array, [0] is a Top object and [1] is a Bottom object.
+     * in returned array, [0] is a Top object and [1] is a Bottom object. Returns null in
+     * place of an Article when no good solutions are found.
      *
      * @return      Array holding articles for every slot. [0] is a top, [1] is a bottom.
      */
-    public static Article[] getOutFit(int temperature, Formality formality) {
+    public static Article[] getOutFit(int temperature, Formality formality, SharedPreferences prefs) {
 
         topPile.clear();
         botPile.clear();
@@ -68,32 +75,38 @@ public final class Closet {
         while(it.hasNext()) {
             Map.Entry pair = (Map.Entry) it.next();
             Article a = (Article) pair.getValue();
+            Formality f = a.getFormality();
 
-            //switch formality and use flow-through to add appropriate clothes
             switch(formality) {
 
-                case CASUAL://include casual, athletic, and b.c.
-                    addArticleToPile(a);
-
-                case ATHLETIC://include athletic only
-                    addArticleToPile(a);
-                    if(formality == Formality.ATHLETIC) break;
-                    //else flow into b.c.
-
-                case BUSINESS_CASUAL: //include b.c. and formal
-                    addArticleToPile(a);
-
-                case FORMAL:
-                    addArticleToPile(a);
+                case CASUAL: //include casual, athletic, and b.c.
+                    if(f == Formality.CASUAL || f == Formality.ATHLETIC ||
+                            f == Formality.BUSINESS_CASUAL) {
+                        addArticleToPile(a);
+                    }
                     break;
 
-                case SLEEPWEAR:
-                    addArticleToPile(a);
+                case ATHLETIC: //include athletic only
+                    if(f == Formality.ATHLETIC) addArticleToPile(a);
+                    break;
+
+                case BUSINESS_CASUAL: //include b.c. and formal
+                    if(f == Formality.BUSINESS_CASUAL || f == Formality.FORMAL) {
+                        addArticleToPile(a);
+                    }
+                    break;
+
+                case FORMAL: //include only formal
+                    if(f == Formality.FORMAL) addArticleToPile(a);
+                    break;
+
+                case SLEEPWEAR: //include only sleepwear
+                    if(f == Formality.SLEEPWEAR) addArticleToPile(a);
             }// end switch
 
         }// end iterator
 
-        return clothesPileShuffle();
+        return clothesPileShuffle(temperature, prefs);
     }
 
     private static void addArticleToPile(Article a) {
@@ -104,30 +117,68 @@ public final class Closet {
         }
     }
 
-    private static Article[] clothesPileShuffle() {
+    private static Article[] clothesPileShuffle(int temperature, SharedPreferences prefs) {
         Collections.shuffle(topPile);
         Collections.shuffle(botPile);
 
         Article[] outfit = new Article[2];
-        outfit[0] = pileSearch(topPile);
-        outfit[1] = pileSearch(botPile);
+        outfit[0] = pileSearch(topPile, temperature, prefs, false, false, 0);
+
+        boolean blockPatterns = false;
+        boolean matchColors = false;
+        int firstColor = 0;
+        if(outfit[0] != null) {
+            blockPatterns = outfit[0].isPatterned();
+            matchColors = true;
+            firstColor = outfit[0].getColor();
+        }
+        outfit[1] = pileSearch(botPile, temperature, prefs, blockPatterns, matchColors, firstColor);
 
         return outfit;
     }
 
-    private static Article pileSearch(Stack pile) {
-       // while((top = topPile.pop()) != null) {
-           // if(top.)
-       // }
-        /*
-        Article[] articles = new Article[2];
-        Random random = new Random();
-        articles[0] = hashTable.get(random.nextInt(getSize()));//this is not going to work when articles get deleted
-        articles[1] = hashTable.get(random.nextInt(getSize()));
-        return articles;
-        */
+    private static Article pileSearch(Stack pile, int temperature,
+                                      SharedPreferences prefs, boolean blockingPatterns,
+                                      boolean matchColors, int colorToMatch) {
+        Article a;
+        Temperature articleTemp;
+        boolean goodChoice;
+        boolean hot = false;
+        boolean cold = false;
+        double distance;
 
-        return (Article) pile.pop();
+        if(temperature < prefs.getInt("PreferredMin", 38)) cold = true;
+        if(temperature > prefs.getInt("PreferredMax", 80)) hot = true;
+
+        while(!pile.isEmpty()) {
+            goodChoice = true;
+            a = (Article) pile.peek();
+
+            //Handle clashing patterns
+            if(blockingPatterns) {
+                if( a.isPatterned() ) {
+                    goodChoice = false;
+                }
+            }
+
+            //Handle current temperature
+            articleTemp = a.getIdealTemp();
+            if(hot && articleTemp != Temperature.HOT) goodChoice = false; //too hot
+            else if (cold && articleTemp != Temperature.COLD) goodChoice = false; //too cold
+            else if(!hot && !cold && articleTemp == Temperature.HOT) goodChoice = false; //too cold
+            else if(!hot && !cold && articleTemp == Temperature.COLD) goodChoice = false; //too hot
+
+            //handle clashing colors
+            distance = Colour.distanceBetweenColorsWithFormula(a.getColor(), colorToMatch,
+                    Colour.ColorDistanceFormula.ColorDistanceFormulaCIE94);
+            //if(distance > minColorDistance && distance < clashThreshold) goodChoice = false; //similar clash
+            //if(distance > maxColorDistance) goodChoice = false; //complimentary clash
+
+            if(goodChoice) return (Article) pile.pop();
+            pile.pop(); //remove this non-matching article and continue
+        }
+
+        return null; // return null if no good matches are found
     }
 
     public static String getString() {

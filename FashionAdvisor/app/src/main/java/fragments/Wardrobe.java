@@ -23,7 +23,7 @@ import static android.app.Activity.RESULT_OK;
  * The wardrobe class allows the user to view and edit their saved clothes.
  */
 
-//TODO: Allow users to modify / add clothing here
+//TODO: Allow users to modify clothing here
 public class Wardrobe extends Fragment {
 
     TextView textView;
