@@ -74,7 +74,7 @@ public class Splash extends AppCompatActivity {
             //TODO: create a layout for first-time tutorial
 
             //set first run to false
-            prefs.edit().putBoolean("firstRun", false).commit();
+            prefs.edit().putBoolean("firstRun", false).apply();
         }
     }
 

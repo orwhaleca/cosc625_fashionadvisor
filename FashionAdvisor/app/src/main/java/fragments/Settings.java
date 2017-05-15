@@ -1,7 +1,10 @@
 package fragments;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +23,8 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.util.Scanner;
 
+import org.florescu.android.rangeseekbar.*;
+
 import cosc625.fashionadvisor.R;
 
 /**
@@ -37,7 +42,8 @@ public class Settings extends Fragment {
     EditText nameBox;
     Button enterButton;
     TextView display;
-
+    RangeSeekBar<Integer> rangeSeekBar;
+    SharedPreferences prefs;
 
     public Settings() {
         //empty constructor
@@ -59,6 +65,14 @@ public class Settings extends Fragment {
         nameBox = (EditText)view.findViewById(R.id.editText);
         enterButton = (Button) view.findViewById(R.id.button2);
         display = (TextView)view.findViewById(R.id.displayName);
+        rangeSeekBar = (RangeSeekBar<Integer>) view.findViewById(R.id.rangeSeekBar);
+        prefs = PreferenceManager.getDefaultSharedPreferences(this.getContext());
+
+        rangeSeekBar.setRangeValues(minTemp, maxTemp);
+        rangeSeekBar.setTextAboveThumbsColor(Color.rgb(10, 10, 10));
+        rangeSeekBar.setSelectedMinValue(prefs.getInt("PreferredMin", 38));//below this is COLD
+        rangeSeekBar.setSelectedMaxValue(prefs.getInt("PreferredMax", 80));//above this is HOT
+
         enterButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // Perform action on click
@@ -68,11 +82,9 @@ public class Settings extends Fragment {
                 display.setText(newName);
                 view.invalidate();
                 //toast(context, "Button pressed!");
-
-
-
             }
         });
+
         String nameFromFile="";
         String genderFromFile="";
         try {
@@ -86,6 +98,7 @@ public class Settings extends Fragment {
         } catch (FileNotFoundException e) {
             //toast(context, "user.info not found!");
         }
+
         switch(genderFromFile)
         {
             case "Male":
@@ -100,12 +113,12 @@ public class Settings extends Fragment {
         }
         display.setText(nameFromFile);
         return view;
-    }
+    }// end onCreateView()
+
+
     public void writeUser(String name, String gender, Context context)
     {
         try {
-
-
             FileOutputStream outputStream = context.openFileOutput("user.info", Context.MODE_PRIVATE);
             OutputStreamWriter osw = new OutputStreamWriter(outputStream);
             //toast(context,"Writing: "+name+"+"+gender);
@@ -114,13 +127,13 @@ public class Settings extends Fragment {
             osw.write(out);
             osw.close();
             outputStream.close();
-
-        }
-        catch (IOException e)
+        } catch (IOException e)
         {
             toast(context,"IOException");
         }
 
+        prefs.edit().putInt("PreferredMin", rangeSeekBar.getSelectedMinValue()).apply();
+        prefs.edit().putInt("PreferredMax", rangeSeekBar.getSelectedMaxValue()).apply();
     }
     public void toast(Context context, CharSequence message)
     {

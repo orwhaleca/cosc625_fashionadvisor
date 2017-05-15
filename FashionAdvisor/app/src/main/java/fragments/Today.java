@@ -1,9 +1,12 @@
 package fragments;
 
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -46,6 +49,8 @@ public class Today extends Fragment {
     ImageView topView, botView;
     RadioGroup radioGroup;
     RadioButton formal, businessCasual, casual, athletic, sleepwear;
+    SharedPreferences prefs;
+
     int temperature = 70;
     float tempTextY, tempTextPadding;
 
@@ -78,6 +83,7 @@ public class Today extends Fragment {
         casual = (RadioButton) view.findViewById(R.id.casualButton);
         athletic = (RadioButton) view.findViewById(R.id.athleticButton);
         sleepwear = (RadioButton) view.findViewById(R.id.sleepwearButton);
+        prefs = PreferenceManager.getDefaultSharedPreferences(this.getContext());
 
         //get 10dp
         tempTextPadding = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10,
@@ -148,9 +154,17 @@ public class Today extends Fragment {
             default:
                 formality = Formality.SLEEPWEAR;
         }
-        Article[] articles = Closet.getOutFit(temperature, formality);
-        topView.setImageBitmap(articles[0].getImage());
-        botView.setImageBitmap(articles[1].getImage());
+        Article[] articles = Closet.getOutFit(temperature, formality, prefs);
+        if(articles[0] != null) {
+            topView.setImageBitmap(articles[0].getImage());
+        } else {
+            topView.setImageResource(android.R.drawable.ic_delete);
+        }
+        if(articles[1] != null) {
+            botView.setImageBitmap(articles[1].getImage());
+        } else {
+            botView.setImageResource(android.R.drawable.ic_delete);
+        }
     }
 
     private void addSample(View view) {
@@ -162,7 +176,8 @@ public class Today extends Fragment {
                                 "https://media.gazman.com.au/media/catalog/product/cache/1/image/700x700/9df78eab33525d08d6e5fb8d27136e95/g/a/gazman-mens-business-shirt-bshw17030t_508_0215.png",//dress shirt
                                 "https://www.rvca.com/media/filter/m/img/mb901cht_grs_1.jpg",//tank top
                                 "http://cdn.connor.com.au/live/connor/product/images/1541129/c15sj304_ink_1_220_265.png",//suit jacket
-                                "http://images.menswearhouse.com/is/image/TMW/MW40_228X_02_JOSEPH_FEISS_BLACK_SOLID_MAIN?01AD=3R3VTebFqNhKneovj4hwr2dxCGszUEoSuWgDlD5Mn_AC_KLlsHqkxHg&01RI=8DE3BA8AFE17DB0&01NA=&$40GridLrg$"};//suit pants
+                                "http://images.menswearhouse.com/is/image/TMW/MW40_228X_02_JOSEPH_FEISS_BLACK_SOLID_MAIN?01AD=3R3VTebFqNhKneovj4hwr2dxCGszUEoSuWgDlD5Mn_AC_KLlsHqkxHg&01RI=8DE3BA8AFE17DB0&01NA=&$40GridLrg$",
+                                "https://ae01.alicdn.com/kf/HTB1_AQnLVXXXXX_XpXXq6xXFXXXs/S-XL-Fashion-font-b-Women-b-font-Capris-font-b-pants-b-font-font-b.jpg"};//suit pants
         String[][] params = new String[imageUrlArr.length][2];
         for(int i = 0; i < params.length; i++) {
             params[i][0] = imageUrlArr[i];
@@ -201,47 +216,52 @@ public class Today extends Fragment {
         switch(sampleNum) {
             case 0:
                 a = new Shirt(this.getContext(), Texture.COTTON, Temperature.WARM,
-                        Formality.CASUAL, "White Shirt", 16777215,//white in hex
+                        Formality.CASUAL, "White Shirt", Color.rgb(227, 227, 227),//white in hex
                         false, bitmap, false);
                 break;
             case 1:
                 a = new Pants(this.getContext(), Texture.DENIM, Temperature.COOL,
-                        Formality.CASUAL, "Denim Jeans", 2574278,//blue in hex
+                        Formality.CASUAL, "Denim Jeans", Color.rgb(47, 53, 67),//blue in hex
                         false, bitmap, false);
                 break;
             case 2:
                 a = new Shirt(this.getContext(), Texture.FLEECE, Temperature.COLD,
-                        Formality.CASUAL, "Christmas Sweater", 100932,//green
+                        Formality.CASUAL, "Christmas Sweater", Color.rgb(0, 148, 70),//green
                         true, bitmap, true);
                 break;
             case 3:
                 a = new Pants(this.getContext(), Texture.POLYESTER, Temperature.COLD,
-                        Formality.ATHLETIC, "Snow Pants", 1842715,//black
+                        Formality.ATHLETIC, "Snow Pants", Color.rgb(28, 30, 27),//black
                         false, bitmap, false);
                 break;
             case 4:
                 a = new Shirt(this.getContext(), Texture.COTTON, Temperature.COOL,
-                        Formality.BUSINESS_CASUAL, "Dress Shirt", 14002373,//plum?
+                        Formality.BUSINESS_CASUAL, "Dress Shirt", Color.rgb(200, 178, 218),//plum?
                         true, bitmap, true);
                 break;
             case 5:
                 a = new Shirt(this.getContext(), Texture.COTTON, Temperature.HOT,
-                        Formality.ATHLETIC, "Tank Top", 10395294,//gray
+                        Formality.ATHLETIC, "Tank Top", Color.rgb(142,142,142),//gray
                         false, bitmap, false);
                 break;
             case 6:
                 a = new Shirt(this.getContext(), Texture.POLYESTER, Temperature.COOL,
-                        Formality.FORMAL, "Suit Jacket", 3028033,//slate gray
+                        Formality.FORMAL, "Suit Jacket", Color.rgb(48,56,70),//slate gray
                         false, bitmap, true);
                 break;
             case 7:
                 a = new Pants(this.getContext(), Texture.POLYESTER, Temperature.COOL,
-                        Formality.FORMAL, "Suit Pants", 2039324,//black
+                        Formality.FORMAL, "Suit Pants", Color.rgb(31,30,28),//black
                         false, bitmap, false);
+                break;
+            case 8:
+                a = new Pants(this.getContext(), Texture.SPANDEX, Temperature.WARM,
+                        Formality.CASUAL, "Checkered Capris", Color.rgb(235,241,143),
+                        true, bitmap, false);
                 break;
             default:
                 a = new Shirt(this.getContext(), Texture.COTTON, Temperature.WARM,
-                        Formality.CASUAL, "firstShirt", 16777215,//white in hex
+                        Formality.CASUAL, "firstShirt", Color.rgb(227, 227, 227),//white in hex
                         false, bitmap, false);
         }
         a.save();
@@ -266,7 +286,6 @@ public class Today extends Fragment {
             } catch (IOException e) {
                 // Log exception
                 e.printStackTrace();
-                System.out.println(e);
                 return null;
             }
         }

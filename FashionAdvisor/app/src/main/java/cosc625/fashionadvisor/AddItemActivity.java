@@ -5,17 +5,16 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
-import com.github.danielnilsson9.colorpickerview.*;
-import org.florescu.android.rangeseekbar.*;
+
+import com.github.danielnilsson9.colorpickerview.view.ColorPickerView;
+
+
 
 import clothing.*;
 
@@ -27,6 +26,7 @@ public class AddItemActivity extends AppCompatActivity {
     CheckBox patternCheckBox;
     Button confirm;
     ImageView articlePic;
+    ColorPickerView colorPicker;
 
     Intent intent;
     Bundle bundle;
@@ -47,6 +47,7 @@ public class AddItemActivity extends AppCompatActivity {
         patternCheckBox = (CheckBox) findViewById(R.id.checkBox);
         confirm = (Button) findViewById(R.id.confirmButton);
         articlePic = (ImageView) findViewById(R.id.articlePicture);
+        colorPicker = (ColorPickerView) findViewById(R.id.color_picker);
 
         articlePic.setImageBitmap((Bitmap) bundle.get("Image"));
 
@@ -60,20 +61,21 @@ public class AddItemActivity extends AppCompatActivity {
 
     private void createArticleAndExit() {
         Context context = getApplicationContext();
-        String name = itemName.getText().toString();
         Texture tex = Texture.valueOf(textureType.getSelectedItem().toString());
         Temperature ideal = Temperature.valueOf(idealTemp.getSelectedItem().toString());
         Formality formality = Formality.valueOf(formalityLevel.getSelectedItem().toString());
+        String name = itemName.getText().toString();
+        int color = colorPicker.getColor();
         boolean patterned = patternCheckBox.isChecked();
 
         //we'll ignore shorts/longsleeves since they aren't used in matching right now
         switch (itemType.getSelectedItem().toString()) {
             case "Shirt":
-                new Shirt(context, tex, ideal, formality, name, 1, patterned,
+                new Shirt(context, tex, ideal, formality, name, color, patterned,
                         (Bitmap) bundle.get("Image"), false).save();
                 break;
             default: //pants
-                new Pants(context, tex, ideal, formality, name, 1, patterned,
+                new Pants(context, tex, ideal, formality, name, color, patterned,
                         (Bitmap) bundle.get("Image"), false).save();
         }
         finish();

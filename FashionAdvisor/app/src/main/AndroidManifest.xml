@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="cosc625.fashionadvisor">
+    package="cosc625.fashionadvisor"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <!-- <uses-permission android:name="android.permission.CAMERA"> </uses-permission> -->
     <uses-permission android:name="android.permission.INTERNET" />
@@ -10,6 +11,7 @@
         android:required="true" />
 
     <application
+        tools:replace="icon"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -29,6 +31,8 @@
             android:label="@string/title_activity_main_tabbed"
             android:theme="@style/FashionTheme" />
         <activity android:name=".AddItemActivity" />
+
+
     </application>
 
 </manifest>
